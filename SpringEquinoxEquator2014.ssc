@@ -1,0 +1,204 @@
+/*
+March Equinox as seen at the Equator, the sun following the celestial equator.
+By Daniel Sikar
+*/
+// text display helper functions by Peter Hickey
+function blockText(textArray)
+{
+	var fontSize = 50;
+	var lineSep = fontSize * 1.5;
+	y = 100 + (lineSep*textArray.length);
+	ids = new Array();
+	for(i=0; i<textArray.length; i++)
+	{
+		ids[i] = LabelMgr.labelScreen(textArray[i], 30, y, false, fontSize, "#ff0000");
+		y = y - lineSep;
+	}
+
+	for(i=0; i<ids.length; i++)
+	{
+		LabelMgr.setLabelShow(ids[i], true);
+		core.wait(0.15);
+	}
+	return ids;
+}
+
+function clearLabels(ids)
+{
+	for(i=0; i<ids.length; i++)
+	{
+		LabelMgr.setLabelShow(ids[i], false);
+		core.wait(0.15);
+	}
+	core.wait(1);
+	for(i=0; i<ids.length; i++)
+	{
+		LabelMgr.deleteLabel(ids[i]);
+	}
+}
+
+// set normal time rate
+core.setTimeRate(1);
+
+// set azimuthal mount
+StelMovementMgr.setEquatorialMount(false);
+
+core.setDate("2014:03:20T11:30:00","utc");
+// set date to march equinox
+
+// set location to Galapagos Islands
+core.setObserverLocation(-91.5,0,48,0,"Galapagos Islands");
+
+// set horizon to bottom of screen
+core.moveToAltAzi(29, 90, 0);
+
+// turn off gui
+core.setGuiVisible(false);
+
+// hide equatorial grid
+GridLinesMgr.setFlagEquatorGrid(false);
+
+// hide azimuth grid
+GridLinesMgr.setFlagAzimuthalGrid(false);
+
+// zoom to 65 degrees field of vision
+StelMovementMgr.zoomTo(65, 0);
+
+// wait a little before presenting text
+core.wait(3);
+ids = blockText(Array("March Equinox 2014, Galapagos Islands, Equator"));
+core.wait(5);
+clearLabels(ids);
+
+// show equatorial grid
+ids = blockText(Array("Turning on Equatorial grid"));
+core.wait(2);
+GridLinesMgr.setFlagEquatorGrid(true);
+core.wait(1);
+clearLabels(ids);
+
+// show azimuthal grid
+ids = blockText(Array("Turning on Azimuthal grid"));
+core.wait(2);
+GridLinesMgr.setFlagAzimuthalGrid(true);
+core.wait(1);
+clearLabels(ids);
+
+core.wait(2);
+
+// pan around the horizon
+for(i=2; i<5; i++)
+{
+	a = i * 90;
+	core.moveToAltAzi(29, a, 5);
+	core.wait(3);
+}
+core.moveToAltAzi(29, 90, 5);
+core.wait(6);
+
+ids = blockText(Array("Sun rises and sets at 90 degrees in relation to horizon"));
+core.wait(3);
+clearLabels(ids);
+
+// speed up time
+core.setTimeRate(2000);
+core.wait(5);
+
+// get the sun's altitude
+SunData = core.getObjectPosition("Sun");
+SunAlt = SunData["altitude"];
+//core.debug(SunAlt);
+
+// select the sun
+core.selectObjectByName("Sun", pointer = true);
+// start tracking
+StelMovementMgr.setFlagTracking(true);
+
+while (SunAlt < 29)
+{
+	core.wait(0.01);
+	SunData = core.getObjectPosition("Sun");
+	SunAlt = SunData["altitude"];
+}
+
+core.wait(1);
+
+while (SunAlt < 80)
+{
+	core.wait(0.01);
+	SunData = core.getObjectPosition("Sun");
+	SunAlt = SunData["altitude"];
+}
+
+ids = blockText(Array("Sun passes overhead"));
+core.wait(1);
+clearLabels(ids);
+
+// lower speed to obviate east to west flip
+core.setTimeRate(1500);
+
+while (SunAlt > 80)
+{
+	core.wait(0.01);
+	SunData = core.getObjectPosition("Sun");
+	SunAlt = SunData["altitude"];
+}
+core.wait(1);
+
+core.setTimeRate(2000);
+
+
+// once sun starts to set
+while (SunAlt > 29)
+{
+	core.wait(0.01);
+	SunData = core.getObjectPosition("Sun");
+	SunAlt = SunData["altitude"];
+}
+
+// stop tracking to keep eye level at horizon
+StelMovementMgr.setFlagTracking(false);
+
+core.wait(1);
+
+// then start diminishing time rate until back to normal
+while (SunAlt > 0)
+{
+	core.wait(0.01);
+	SunData = core.getObjectPosition("Sun");
+	SunAlt = SunData["altitude"];
+}
+
+core.setTimeRate(1000);
+
+while (SunAlt > -5)
+{
+	core.wait(0.01);
+	SunData = core.getObjectPosition("Sun");
+	SunAlt = SunData["altitude"];
+}
+
+core.setTimeRate(500);
+
+while (SunAlt > -20)
+{
+	core.wait(0.01);
+	SunData = core.getObjectPosition("Sun");
+	SunAlt = SunData["altitude"];
+}
+
+core.setTimeRate(1);
+
+// hide equatorial grid
+ids = blockText(Array("Turning off Equatorial grid"));
+core.wait(2);
+GridLinesMgr.setFlagEquatorGrid(false);
+//core.wait(1);
+clearLabels(ids);
+
+// hide azimuthal grid
+ids = blockText(Array("Turning off Azimuthal grid"));
+core.wait(2);
+GridLinesMgr.setFlagAzimuthalGrid(false);
+//core.wait(1);
+clearLabels(ids);
