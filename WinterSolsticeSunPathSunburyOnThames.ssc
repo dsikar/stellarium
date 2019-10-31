@@ -1,6 +1,6 @@
 // Winter Solstice 2019 Sun Path - Sunbury-on-Thames
 
-// API Documentation: https://stellarium.org/doc/0.17/classStelMainScriptAPI.html
+// API Scripting Engine Documentation https://stellarium.org/doc/0.17/scripting.html
 // set location
 // 51.4192? N, 0.4192? W
 // 51? 25' 9.12" 0? 25' 9.12"
@@ -22,10 +22,13 @@ StelMovementMgr.zoomTo(90, 0);
 core.setDate("2019:22:31T05:30:00","utc");
 
 // Remove landscape
+// https://stellarium.org/doc/0.17/classLandscapeMgr.html
 
 LandscapeMgr.setFlagLandscape(false);
 
-core.starchart("starchart");
+// Show horizon
+
+GridLinesMgr.setFlagHorizonLine(true);
 
 // Add Azimutal grid
 
