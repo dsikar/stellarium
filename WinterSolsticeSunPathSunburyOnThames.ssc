@@ -7,15 +7,13 @@
  
 core.setObserverLocation(-0.42,51.42,12,1,"Sunbury-on-Thames", "Earth");
 
-// TODO
-
 // Set orientation
 
-core.moveToAltAzi(0, 180, 1);
+core.moveToAltAzi(25, 180, 1);
 
 // Set FOV
 
-StelMovementMgr.zoomTo(90, 0);
+StelMovementMgr.zoomTo(120, 0);
 
 // Set time of day
 
@@ -30,8 +28,14 @@ LandscapeMgr.setFlagLandscape(false);
 
 GridLinesMgr.setFlagHorizonLine(true);
 
+// Turn off gui
+
+core.setGuiVisible(false);
+
 // Add Azimutal grid
 
-
+GridLinesMgr.setFlagAzimuthalGrid(true);
 
 // Set speed
+
+core.setTimeRate(500);
