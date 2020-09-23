@@ -1,0 +1,41 @@
+// End of Summer Starlink view - Sunbury-on-Thames
+
+// API Scripting Engine Documentation https://stellarium.org/doc/0.17/scripting.html
+// set location
+// 51.4192? N, 0.4192? W
+// 51? 25' 9.12" 0? 25' 9.12"
+ 
+core.setObserverLocation(-0.42,51.42,12,1,"Sunbury-on-Thames", "Earth");
+
+// Set orientation
+
+core.moveToAltAzi(165, 40, 1);
+
+// Set FOV
+
+StelMovementMgr.zoomTo(120, 0);
+
+// Set time of day
+
+core.setDate("2020:09:18T04:19:00","utc");
+
+// Remove landscape
+// https://stellarium.org/doc/0.17/classLandscapeMgr.html
+
+LandscapeMgr.setFlagLandscape(false);
+
+// Show horizon
+
+GridLinesMgr.setFlagHorizonLine(true);
+
+// Turn off gui
+
+core.setGuiVisible(false);
+
+// Add Azimutal grid
+
+GridLinesMgr.setFlagAzimuthalGrid(true);
+
+// Set speed
+
+core.setTimeRate(500);
